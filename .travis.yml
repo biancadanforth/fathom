@@ -1,6 +1,29 @@
 jobs:
   include:
     - stage: test
+      name: "Javascript functional tests"
+      language: node_js
+      node_js:
+        - node
+      env:
+        - MOZ_HEADLESS=1
+      addons:
+        # download the latest Firefox binary from Mozilla and link the binary to /usr/local/bin/firefox
+        firefox: latest
+      script:
+        # add geckodriver executable path to the PATH variable
+        export PATH=$PATH:$TRAVIS_BUILD_DIR/node_modules/geckodriver/bin;
+        yarn mocha --timeout 15000 test/functional/functionalTest.js;
+      # language: node_js
+      # node_js:
+      #   - node
+      # addons:
+      #   apt:
+      #     packages:
+      #       - python-virtualenv
+      # after_success:
+      #   - "npm run coveralls"
+    - stage: test
       name: "Javascript tests"
       language: node_js
       node_js:
